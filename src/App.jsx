@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import TodoForm from "./component/ToDoComponent";
 import ToDoList from "./component/ToDoList";
-import "./App.css"; // подключим стили
+import "./App.css";
 
 function App() {
     const [items, setItems] = useState([]);
     const [initialData, setInitialData] = useState(null);
+    const [highlightedField, setHighlightedField] = useState(null);
 
     useEffect(() => {
         const savedItems = localStorage.getItem("todos");
@@ -24,16 +25,25 @@ function App() {
             return;
         }
 
+        if (!item.title || !item.body || !item.endDate) {
+            setHighlightedField(item.title ? (item.body ? "endDate" : "body") : "title");
+            return;
+        }
+
+        if (items.some(i => i.title === item.title)) {
+            alert("Задача с таким названием уже существует!");
+            return;
+        }
+
         if (item.id) {
-            setItems(prev =>
-                prev.map(it => it.id === item.id ? item : it)
-            );
+            setItems(prev => prev.map(it => it.id === item.id ? { ...it, ...item } : it));
         } else {
             const newItem = { ...item, id: Date.now() };
             setItems([...items, newItem]);
         }
 
         setInitialData(null);
+        setHighlightedField(null);
     };
 
     const deleteItem = (idx) => {
@@ -47,6 +57,7 @@ function App() {
             <TodoForm
                 item={initialData}
                 onSubmit={handleAddOrEditItem}
+                highlightedField={highlightedField}
             />
             <ToDoList
                 items={items}
