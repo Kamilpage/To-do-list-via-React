@@ -27,7 +27,7 @@ function ToDoList({ items, onEdit, onDelete }) {
                 <div key={item.id ?? index} className="todo-item">
                     <h2 className="todo-title">{item.title}</h2>
 
-                    <p className="todo-text">{item.body}</p>
+                    <p className="todo-text" title={item.body}>{item.body}</p>
 
                     <p className="todo-date">
                         {item.endDate}
@@ -35,7 +35,7 @@ function ToDoList({ items, onEdit, onDelete }) {
 
                     <div className="todo-actions">
                         <div className="todo-status">
-                            <ColorButton />
+                            <ColorButton status={item.status} />
                         </div>
 
                         <button

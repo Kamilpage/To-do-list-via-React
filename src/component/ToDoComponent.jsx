@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import React from "react";
 
-function TodoForm({ onSubmit, item }) {
+function TodoForm({ onSubmit, item, highlightedField }) {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -36,7 +35,7 @@ function TodoForm({ onSubmit, item }) {
 
     const handleCancel = () => {
         clearForm();
-        onSubmit(null); // сбросим форму и передадим null
+        onSubmit(null);
     };
 
     return (
@@ -47,16 +46,21 @@ function TodoForm({ onSubmit, item }) {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Name of a task" />
-                <input
-                    type="text"
+                    placeholder="Name of a task"
+                    className={highlightedField === "title" ? "highlighted" : ""}
+                />
+                <textarea
                     value={body}
                     onChange={(e) => setBody(e.target.value)}
-                    placeholder="Description" />
+                    placeholder="Description"
+                    className={highlightedField === "body" ? "highlighted" : ""}
+                />
                 <input
                     type="date"
                     value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)} />
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className={highlightedField === "endDate" ? "highlighted" : ""}
+                />
 
                 {item ? (
                     <>

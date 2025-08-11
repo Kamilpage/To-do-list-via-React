@@ -1,9 +1,10 @@
 import { useState } from "react";
 
-function ColorButton() {
-    const [clicked, setClicked] = useState(false);
+function ColorButton({ status }) {
+    const [clicked, setClicked] = useState(status === "complete");
 
     const handleClick = () => {
+        if (clicked) return; // Если задача уже завершена, не меняем статус
         setClicked((prev) => !prev);
     };
 
@@ -13,8 +14,9 @@ function ColorButton() {
             style={{
                 backgroundColor: clicked ? "green" : "grey",
                 color: "white",
-                cursor: "pointer",
+                cursor: clicked ? "not-allowed" : "pointer",
             }}
+            disabled={clicked}
         >
             {clicked ? "Completed" : "In Progress"}
         </button>
